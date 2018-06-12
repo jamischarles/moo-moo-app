@@ -10,12 +10,32 @@ class HomeScreen extends React.Component {
   render() {
     return (
       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-        <Text>Welcome to Moo Moo farms.</Text>
-        <Text>You will love our milk. </Text>
-        <Button
-          title="Start Milk order"
-          onPress={() => this.props.navigation.navigate('Form')}
-        />
+        <View style={{ flex: 3, backgroundColor: 'grey' }}>
+          <Text>Welcome to Moo Moo farms.</Text>
+        </View>
+        <View style={{ flex: 2, backgroundColor: 'purple' }}>
+          <Text>You will love our milk. </Text>
+        </View>
+        <View style={{ flex: 1 }}>
+          <Button
+            title="Start Milk order"
+            onPress={() => this.props.navigation.navigate('Form')}
+          />
+        </View>
+        <View style={{ flex: 2, flexDirection: 'row', justifyContent: 'space-evenly' }}>
+          <Text style={{ flex: 1, backgroundColor: 'green' }}>
+            Dog
+          </Text>
+          <Text style={{ flex: 1, backgroundColor: 'yellow' }}>
+            Dog
+          </Text>
+          <Text style={{ flex: 1, backgroundColor: 'blue' }}>
+            Dog
+          </Text>
+          <Text style={{ flex: 1, backgroundColor: 'red' }}>
+            Dog
+          </Text>
+        </View>
       </View>
     );
   }
