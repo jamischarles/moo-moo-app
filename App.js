@@ -1,19 +1,41 @@
 import React from 'react';
-import {StyleSheet, Button, View, Text, TextInput} from 'react-native';
-import {createStackNavigator} from 'react-navigation';
-import {MapView} from 'expo';
-import {withFormik} from 'formik';
+import { StyleSheet, Button, View, Text, TextInput } from 'react-native';
+import { createMaterialTopTabNavigator } from 'react-navigation';
+import { MapView } from 'expo';
+import { withFormik } from 'formik';
+import Map from './components/Map';
+
 
 class HomeScreen extends React.Component {
   render() {
     return (
-      <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-        <Text>Welcome to Moo Moo farms.</Text>
-        <Text>You will love our milk. </Text>
-        <Button
-          title="Start Milk order"
-          onPress={() => this.props.navigation.navigate('Form')}
-        />
+      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+        <View style={{ flex: 3, backgroundColor: 'grey' }}>
+          <Text>Welcome to Moo Moo farms.</Text>
+        </View>
+        <View style={{ flex: 2, backgroundColor: 'purple' }}>
+          <Text>You will love our milk. </Text>
+        </View>
+        <View style={{ flex: 1 }}>
+          <Button
+            title="Start Milk order"
+            onPress={() => this.props.navigation.navigate('Form')}
+          />
+        </View>
+        <View style={{ flex: 2, flexDirection: 'row', justifyContent: 'space-evenly' }}>
+          <Text style={{ flex: 1, backgroundColor: 'green' }}>
+            Dog
+          </Text>
+          <Text style={{ flex: 1, backgroundColor: 'yellow' }}>
+            Dog
+          </Text>
+          <Text style={{ flex: 1, backgroundColor: 'blue' }}>
+            Dog
+          </Text>
+          <Text style={{ flex: 1, backgroundColor: 'red' }}>
+            Dog
+          </Text>
+        </View>
       </View>
     );
   }
@@ -42,8 +64,8 @@ class FormScreen extends React.Component {
       <View>
         <Text>What is your name? </Text>
         <TextInput
-          onChangeText={text => props.setFieldValue('email', text)}
-          value={props.values.email}
+          onChangeText={name => props.setFieldValue('name', name)}
+          value={props.values.name}
           style={{
             width: 200,
             height: 44,
@@ -52,10 +74,71 @@ class FormScreen extends React.Component {
             borderColor: '#ccc',
           }}
         />
-        <Text>Phone number ? </Text>
+        <Text>Phone number? </Text>
         <TextInput
-          onChangeText={text => props.setFieldValue('email', text)}
-          value={props.values.email}
+          onChangeText={phone => props.setFieldValue('phone', phone)}
+          value={props.values.phone}
+          style={{
+            width: 200,
+            height: 44,
+            padding: 8,
+            borderWidth: 1,
+            borderColor: '#ccc',
+          }}
+        />
+
+
+        <Button
+          title="Create Order"
+          onPress={() => this.props.navigation.navigate('Order')}
+        />
+        {/* <Button onPress={this.submitFormViaEmail} title="Place Order" /> */}
+      </View>
+    );
+  }
+}
+
+var wrapForm = withFormik({});
+
+//Second Order Form as requested by Kenfo
+
+class Order extends React.Component {
+  constructor() {
+    super();
+    this.submitFormViaEmail = this.submitFormViaEmail.bind(this);
+  }
+  submitFormViaEmail() {
+    var url =
+      'https://hooks.zapier.com/hooks/catch/3120953/an5a96?name=lamis&city=san jose';
+    // var url = 'https://jsonplaceholder.typicode.com/posts/1'; // fake
+
+    fetch(url, {})
+      .then(response => response.json())
+      .then(json => {
+        console.log(json);
+        this.props.navigation.navigate('Confirm');
+      });
+  }
+  render() {
+    var props = this.props;
+    return (
+      <View>
+        <Text>Bottle Size? </Text>
+        <TextInput
+          onChangeText={bottleSize => props.setFieldValue('bottleSize', bottleSize)}
+          value={props.values.bottleSize}
+          style={{
+            width: 200,
+            height: 44,
+            padding: 8,
+            borderWidth: 1,
+            borderColor: '#ccc',
+          }}
+        />
+        <Text>Quantity?</Text>
+        <TextInput
+          onChangeText={quantity => props.setFieldValue('quantity', quantity)}
+          value={props.values.quantity}
           style={{
             width: 200,
             height: 44,
@@ -66,11 +149,9 @@ class FormScreen extends React.Component {
         />
 
         <Button
-          title="Choose deliviery location "
+          title="Choose delivery location"
           onPress={() => this.props.navigation.navigate('LocationPicker')}
         />
-
-        <Button onPress={this.submitFormViaEmail} title="Place Order" />
       </View>
     );
   }
@@ -78,33 +159,15 @@ class FormScreen extends React.Component {
 
 var wrapForm = withFormik({});
 
-class SuccessScreen extends React.Component {
+class Confirm extends React.Component {
   render() {
     return (
-      <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
         <Text>
-          Thank you for your order. We will call you at 123-123-1222 witin 5
+          Thank you for your order. We will call you at 123-123-1222 within 5
           minutes to confirm your order.
         </Text>
       </View>
-    );
-  }
-}
-
-class Map extends React.Component {
-  render() {
-    return (
-      <MapView
-        style={{
-          flex: 1,
-        }}
-        initialRegion={{
-          latitude: 37.78825,
-          longitude: -122.4324,
-          latitudeDelta: 0.0922,
-          longitudeDelta: 0.0421,
-        }}
-      />
     );
   }
 }
@@ -118,12 +181,13 @@ const styles = StyleSheet.create({
   },
 });
 
-export default createStackNavigator(
+export default createMaterialTopTabNavigator(
   {
     Home: HomeScreen,
-    LocationPicker: Map,
     Form: wrapForm(FormScreen),
-    Success: SuccessScreen,
+    Order: wrapForm(Order),
+    LocationPicker: Map,
+    Confirm: Confirm,
   },
   {
     initialRouteName: 'Home',
