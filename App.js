@@ -189,14 +189,15 @@ class Map extends React.Component {
 
     this.setState({ region }, () => {
       setTimeout(() => {
-        
+
         Geocoder.from(region.latitude, region.longitude)
           .then(json => {
             var addressComponent = json.results[0].address_components[0];
             this.setState({ currentRegionName: addressComponent.long_name });
           })
           .catch(error => console.warn(error));
-      }, 500);})
+      }, 500);
+    })
   }
 
   resetRegion() {
@@ -212,7 +213,7 @@ class Map extends React.Component {
     })
   }
 
-  confirmCoordinates(){
+  confirmCoordinates() {
 
   }
 
