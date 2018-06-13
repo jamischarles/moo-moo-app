@@ -68,6 +68,7 @@ export default class Map extends React.Component {
                     right: 0,
                     top: 0,
                     bottom: 0,
+                    backgroundColor: 'black'
                 }}
             >
                 <MapView
@@ -87,15 +88,17 @@ export default class Map extends React.Component {
                 </MapView>
                 <View style={{ flex: 1, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
 
-                    <Text >
+                    <Text style={{ color: 'white' }}>
                         `{this.state.currentRegionName}, Phnom Penh, Cambodia`
             </Text>
                     <Button
+                        color={'white'}
                         title="Reset Location"
                         onPress={() => this.resetRegion()}
                         style={{ flex: 1 }}
                     />
                     <Button
+                        color={'white'}
                         style={{ flex: 1 }}
                         title="Confirm"
                         onPress={() => this.props.navigation.navigate('Confirm')}
