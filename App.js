@@ -92,7 +92,7 @@ class HomeScreen extends React.Component {
 class FormScreen extends React.Component {
   constructor() {
     super();
-    this.state={
+    this.state = {
       name: '',
       phone: ''
     }
@@ -118,7 +118,7 @@ class FormScreen extends React.Component {
         <Text style={{ color: 'white', fontFamily: 'Georgia-Bold', fontSize: 25 }}>What is your name? </Text>
         <TextInput
           // onChangeText={name => props.setFieldValue('name', name)}
-          onChangeText={name => this.setState({name})}
+          onChangeText={name => this.setState({ name })}
           value={props.values.name}
           style={{
             width: 200,
@@ -132,7 +132,7 @@ class FormScreen extends React.Component {
         <Text style={{ color: 'white', fontFamily: 'Georgia-Bold', fontSize: 25 }}>Phone number? </Text>
         <TextInput
           // onChangeText={phone => props.setFieldValue('phone', phone)}
-          onChangeText={phone => this.setState({phone})}
+          onChangeText={phone => this.setState({ phone })}
           value={props.values.phone}
           style={{
             width: 200,
@@ -152,7 +152,7 @@ class FormScreen extends React.Component {
         />
         {/* <Button onPress={this.submitFormViaEmail} title="Place Order" /> */}
       </View>
-    ); 
+    );
   }
 }
 
@@ -196,7 +196,7 @@ class Order extends React.Component {
       <View style={styles.form}>
         <Text style={{ color: 'white' }}>Bottle Size? </Text>
         <View style={{ flexDirection: 'row' }}>
-        {/* Would like to use a switch here or some other option */}
+          {/* Would like to use a switch here or some other option */}
           <Button
             style={{ flex: 1 }}
             title="1 Liter"
@@ -234,7 +234,7 @@ class Order extends React.Component {
 var wrapForm = withFormik({});
 
 class Confirm extends React.Component {
-  constructor(){
+  constructor() {
     super()
     this.submitFormViaEmail = this.submitFormViaEmail.bind(this);
   }
