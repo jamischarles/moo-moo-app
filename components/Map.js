@@ -30,11 +30,7 @@ export default class Map extends React.Component {
     onRegionChange(region) {
 
         this.setState({ region }, () => {
-            this.props.screenProps.updateState('coordinates', region)
-        },
-        () => {
             setTimeout(() => {
-
                 Geocoder.from(region.latitude, region.longitude)
                     .then(json => {
                         var addressComponent = json.results[0].address_components[0];

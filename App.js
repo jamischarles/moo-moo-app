@@ -26,10 +26,11 @@ export default class Opening extends React.Component {
       updateState: (stateVal, val) => {
         this.setState({ [stateVal]: val })
       },
-      name: this.state.name
+      name: this.state.name,
+      phone: this.state.phone,
+      bottleSize: this.state.bottleSize,
+      quantity: this.state.quantity
     }
-    console.log('this.state', this.state)
-
     return (
       <Nav screenProps={screenProps} />
     )
