@@ -30,32 +30,30 @@ export default class Map extends React.Component {
     onRegionChange(region) {
 
         this.setState({ region }, () => {
-            this.props.screenProps.updateState('coordinates', region)
-        },
-        () => {
-            setTimeout(() => {
-
-                Geocoder.from(region.latitude, region.longitude)
-                    .then(json => {
-                        var addressComponent = json.results[0].address_components[0];
-                        this.setState({ currentRegionName: addressComponent.long_name });
-                    })
-                    .catch(error => console.warn(error));
-            }, 500);
-        })
-    }
-
-    resetRegion() {
-        this.setState({
-            region: this.state.initialRegion
-        }, () => {
-            Geocoder.from(this.state.initialRegion.latitude, this.state.initialRegion.longitude)
+            // Need a Debouncer here so that the Map runs more smoothly
+            Geocoder.from(region.latitude, region.longitude)
                 .then(json => {
                     var addressComponent = json.results[0].address_components[0];
                     this.setState({ currentRegionName: addressComponent.long_name });
                 })
                 .catch(error => console.warn(error));
         })
+    }
+
+    resetRegion() {
+        this.setState({
+            region: this.state.initialRegion
+        }
+            , () => {
+                Geocoder.from(this.state.initialRegion.latitude, this.state.initialRegion.longitude)
+                    .then(json => {
+                        //Need a Debouncer here so that the Map runs more smoothly
+                        var addressComponent = json.results[0].address_components[0];
+                        this.setState({ currentRegionName: addressComponent.long_name });
+                    })
+                    .catch(error => console.warn(error));
+            }
+        )
     }
 
     render() {

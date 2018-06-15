@@ -6,6 +6,10 @@ import { withFormik } from 'formik';
 import Map from './components/Map';
 import { Icon } from 'react-native-elements';
 import { SegmentedControls } from 'react-native-radio-buttons';
+import Geocoder from 'react-native-geocoding';
+import { GOOGLE_API } from 'react-native-dotenv'
+
+Geocoder.init(GOOGLE_API);
 
 export default class Opening extends React.Component {
   constructor() {
@@ -16,7 +20,12 @@ export default class Opening extends React.Component {
       bottleSize: '',
       quantity: '',
       street: '',
-      coordinates: ''
+      coordinates: {
+        latitude: 11.5683972886659,
+        longitude: 104.92227526802127,
+        latitudeDelta: 0.0922,
+        longitudeDelta: 0.0421,
+      }
     }
 
   }
@@ -26,10 +35,12 @@ export default class Opening extends React.Component {
       updateState: (stateVal, val) => {
         this.setState({ [stateVal]: val })
       },
-      name: this.state.name
+      name: this.state.name,
+      phone: this.state.phone,
+      bottleSize: this.state.bottleSize,
+      quantity: this.state.quantity,
+      coordinates: this.state.coordinates,
     }
-    console.log('this.state', this.state)
-
     return (
       <Nav screenProps={screenProps} />
     )
@@ -253,25 +264,10 @@ class Order extends React.Component {
 
   render() {
     var props = this.props;
-    var {screenProps} = this.props;
+    var { screenProps } = this.props;
     return (
       <View style={styles.form}>
         <Text style={{ color: 'white' }}>Bottle Size? </Text>
-
-
-        {/* <View style={{ flexDirection: 'row' }}>
-          
-          <Button
-            style={{ flex: 1 }}
-            title="1 Liter"
-            onPress={() => this.setState({ bottleSize: '1 Liter' })}
-          />
-          <Button
-            style={{ flex: 1 }}
-            title="2 Liter"
-            onPress={() => this.setState({ bottleSize: '2 Liter' })}
-          />
-        </View> */}
 
         <View style={{ margin: 20 }}>
           <SegmentedControls
@@ -290,7 +286,6 @@ class Order extends React.Component {
           />
           <Text style={{ color: 'white' }}>Selected option: {this.state.selectedOption || 'none'}</Text>
         </View>
-
 
         <Text style={{ color: 'white' }}>Quantity?</Text>
 
@@ -322,6 +317,9 @@ var wrapForm = withFormik({});
 class Confirm extends React.Component {
   constructor() {
     super()
+    this.state = {
+      street: ''
+    }
     this.submitFormViaEmail = this.submitFormViaEmail.bind(this);
   }
 
@@ -340,6 +338,14 @@ class Confirm extends React.Component {
 
   render() {
     var { screenProps } = this.props;
+
+    Geocoder.from(screenProps.coordinates.latitude, screenProps.coordinates.longitude)
+      .then(json => {
+        var addressComponent = json.results[0].address_components[0];
+        this.setState({ street: addressComponent.long_name });
+      })
+      .catch(error => console.warn(error));
+
     return (
       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
         <Text>
@@ -358,7 +364,7 @@ class Confirm extends React.Component {
           Quantity: {screenProps.quantity}
         </Text>
         <Text>
-          Street: {'dog'}
+          Street: {this.state.street}, Phnom Penh, Cambodia
         </Text>
 
         <Button
