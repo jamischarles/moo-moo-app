@@ -27,6 +27,7 @@
     "react-native-elements": "^0.19.1",
     "react-native-geocoding": "^0.3.0",
     "react-native-picker-select": "^3.1.2",
+    "react-native-radio-buttons": "^1.0.0",
     "react-navigation": "^2.2.5"
   }
 }
