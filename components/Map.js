@@ -3,9 +3,9 @@ import { StyleSheet, Button, View, Text, TextInput } from 'react-native';
 import { Marker } from 'react-native-maps';
 import { MapView } from 'expo';
 import Geocoder from 'react-native-geocoding';
-import { GOOGLE_API } from 'react-native-dotenv'
+// import { GOOGLE_API } from 'react-native-dotenv'
 
-Geocoder.init(GOOGLE_API);
+Geocoder.init('AIzaSyBzHpB9P08KOrik2Y4oMg9ghcsEsjlblKU');
 
 export default class Map extends React.Component {
     constructor() {
