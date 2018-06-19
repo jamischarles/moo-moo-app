@@ -31,7 +31,6 @@ export default class Map extends React.Component {
 
         this.setState({ region }, () => {
             setTimeout(() => {
-
                 Geocoder.from(region.latitude, region.longitude)
                     .then(json => {
                         var addressComponent = json.results[0].address_components[0];
@@ -53,10 +52,6 @@ export default class Map extends React.Component {
                 })
                 .catch(error => console.warn(error));
         })
-    }
-
-    confirmCoordinates() {
-
     }
 
     render() {

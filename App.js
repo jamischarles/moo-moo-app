@@ -5,10 +5,41 @@ import { MapView } from 'expo';
 import { withFormik } from 'formik';
 import Map from './components/Map';
 import { Icon } from 'react-native-elements';
+import { SegmentedControls } from 'react-native-radio-buttons';
 
+export default class Opening extends React.Component {
+  constructor() {
+    super()
+    this.state = {
+      name: '',
+      phone: '',
+      bottleSize: '',
+      quantity: '',
+      street: '',
+      coordinates: ''
+    }
+
+  }
+
+  render() {
+    const screenProps = {
+      updateState: (stateVal, val) => {
+        this.setState({ [stateVal]: val })
+      },
+      name: this.state.name,
+      phone: this.state.phone,
+      bottleSize: this.state.bottleSize,
+      quantity: this.state.quantity
+    }
+    return (
+      <Nav screenProps={screenProps} />
+    )
+  }
+}
 
 class HomeScreen extends React.Component {
   render() {
+
     return (
       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
         <ImageBackground style={styles.carousel}
@@ -111,6 +142,7 @@ class FormScreen extends React.Component {
   //     });
   // }
   render() {
+    const { screenProps } = this.props;
     var props = this.props;
     return (
       <View style={styles.form}>
@@ -118,9 +150,13 @@ class FormScreen extends React.Component {
         <Text style={{ color: 'white', fontFamily: 'Georgia-Bold', fontSize: 25 }}>What is your name? </Text>
         <TextInput
           // onChangeText={name => props.setFieldValue('name', name)}
-          onChangeText={name => this.setState({ name })}
+          onChangeText={name => this.setState({ name }, () => {
+            screenProps.updateState('name', name)
+          }
+          )}
           value={props.values.name}
           style={{
+            color: 'white',
             width: 200,
             height: 44,
             padding: 8,
@@ -132,9 +168,12 @@ class FormScreen extends React.Component {
         <Text style={{ color: 'white', fontFamily: 'Georgia-Bold', fontSize: 25 }}>Phone number? </Text>
         <TextInput
           // onChangeText={phone => props.setFieldValue('phone', phone)}
-          onChangeText={phone => this.setState({ phone })}
+          onChangeText={phone => this.setState({ phone }, () => {
+            screenProps.updateState('phone', phone)
+          })}
           value={props.values.phone}
           style={{
+            color: 'white',
             width: 200,
             height: 44,
             padding: 8,
@@ -165,38 +204,64 @@ class Order extends React.Component {
     super();
     this.state = {
       bottleSize: '',
+      selectedOption: '',
       sizes: [
-        {
-          label: '1 Liter',
-          value: '1 Liter'
-        },
-        {
-          label: '2 Liter',
-          value: '2 Liter'
-        },
-      ]
+        '1 Liter',
+        '2 Liter'
+      ],
+      quantity: 1
     }
-    this.submitFormViaEmail = this.submitFormViaEmail.bind(this);
+    // this.submitFormViaEmail = this.submitFormViaEmail.bind(this);
+    this.renderOption = this.renderOption.bind(this);
+    this.renderContainer = this.renderContainer.bind(this);
+    this.setSelectedOption = this.setSelectedOption.bind(this);
   }
-  submitFormViaEmail() {
-    var url =
-      'https://hooks.zapier.com/hooks/catch/3120953/an5a96?name=lamis&city=san jose';
-    // var url = 'https://jsonplaceholder.typicode.com/posts/1'; // fake
+  // submitFormViaEmail() {
+  //   var url =
+  //     'https://hooks.zapier.com/hooks/catch/3120953/an5a96?name=lamis&city=san jose';
+  //   // var url = 'https://jsonplaceholder.typicode.com/posts/1'; // fake
 
-    fetch(url, {})
-      .then(response => response.json())
-      .then(json => {
-        console.log(json);
-        this.props.navigation.navigate('Confirm');
-      });
+  //   fetch(url, {})
+  //     .then(response => response.json())
+  //     .then(json => {
+  //       console.log(json);
+  //       this.props.navigation.navigate('Confirm');
+  //     });
+  // }
+
+
+  setSelectedOption(screenProps, selectedOption) {
+    this.setState({
+      selectedOption
+    }, () => {
+      screenProps.updateState('bottleSize', selectedOption)
+    });
   }
+
+  renderOption(option, selected, onSelect, index) {
+    const style = selected ? { fontWeight: 'bold' } : {};
+
+    return (
+      <Text
+        onPress={onSelect} key={index}
+        style={{ color: 'white', fontSize: 30 }}>{option}</Text>
+    );
+  }
+
+  renderContainer(optionNodes) {
+    return <View>{optionNodes}</View>;
+  }
+
   render() {
     var props = this.props;
+    var {screenProps} = this.props;
     return (
       <View style={styles.form}>
         <Text style={{ color: 'white' }}>Bottle Size? </Text>
-        <View style={{ flexDirection: 'row' }}>
-          {/* Would like to use a switch here or some other option */}
+
+
+        {/* <View style={{ flexDirection: 'row' }}>
+          
           <Button
             style={{ flex: 1 }}
             title="1 Liter"
@@ -207,20 +272,42 @@ class Order extends React.Component {
             title="2 Liter"
             onPress={() => this.setState({ bottleSize: '2 Liter' })}
           />
+        </View> */}
+
+        <View style={{ margin: 20 }}>
+          <SegmentedControls
+            backgroundColor={'black'}
+            selectedBackgroundColor={'#272727'}
+            selectedTint={'#272727'}
+            containerBorderTint={'#272727'}
+            separatorTint={'#272727'}
+            containerStyle={{ width: '80%' }}
+            optionContainerStyle={{ padding: 10 }}
+            options={this.state.sizes}
+            onSelection={(selectedOption) => this.setSelectedOption(screenProps, selectedOption)}
+            selectedOption={this.state.selectedOption}
+            renderOption={this.renderOption}
+            renderContainer={this.renderContainer}
+          />
+          <Text style={{ color: 'white' }}>Selected option: {this.state.selectedOption || 'none'}</Text>
         </View>
 
+
         <Text style={{ color: 'white' }}>Quantity?</Text>
-        <TextInput
-          onChangeText={quantity => props.setFieldValue('quantity', quantity)}
-          value={props.values.quantity}
-          style={{
-            width: 200,
-            height: 44,
-            padding: 8,
-            borderWidth: 1,
-            borderColor: '#ccc',
-          }}
-        />
+
+        <Picker
+          selectedValue={this.state.quantity}
+          style={{ height: 50, width: 100, backgroundColor: '#272727' }}
+          itemStyle={{ height: 50, color: 'white' }}
+          onValueChange={(itemValue, i) => this.setState({ quantity: itemValue }, () => {
+            screenProps.updateState('quantity', itemValue)
+          })}>
+          <Picker.Item label="1" value="1" />
+          <Picker.Item label="2" value="2" />
+          <Picker.Item label="3" value="3" />
+          <Picker.Item label="4" value="4" />
+          <Picker.Item label="5" value="5" />
+        </Picker>
 
         <Button
           title="Choose delivery location"
@@ -253,11 +340,28 @@ class Confirm extends React.Component {
   }
 
   render() {
+    var { screenProps } = this.props;
     return (
       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
         <Text>
           Is this right?
         </Text>
+        <Text>
+          Name: {screenProps.name}
+        </Text>
+        <Text>
+          Phone: {screenProps.phone}
+        </Text>
+        <Text>
+          Bottle Size: {screenProps.bottleSize}
+        </Text>
+        <Text>
+          Quantity: {screenProps.quantity}
+        </Text>
+        <Text>
+          Street: {'dog'}
+        </Text>
+
         <Button
           title='confirm'
           onPress={() => this.props.navigation.navigate('Success')}
@@ -333,7 +437,9 @@ const styles = StyleSheet.create({
   }
 });
 
-export default createStackNavigator(
+
+
+const Nav = createStackNavigator(
   {
     Home: HomeScreen,
     Form: createMaterialTopTabNavigator(
@@ -359,7 +465,6 @@ export default createStackNavigator(
       },
     ),
     Success: Success,
-
   },
   {
     initialRoute: 'Home',
