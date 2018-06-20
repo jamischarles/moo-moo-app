@@ -26,10 +26,14 @@ export default class Map extends React.Component {
         longitudeDelta: 0.0421,
       },
     };
-    this.onRegionChange = this.onRegionChange.bind(this);
+
+    // short debounce on map center pin changing more responsive
+    this.onRegionChange = debounce(this._onRegionChange, 120).bind(this);
+    // longer debounce on address showing up
+    this.fetchGeoAddress = debounce(this._fetchGeoAddress, 400).bind(this);
   }
 
-  onRegionChange(region) {
+  _fetchGeoAddress(region) {
     Geocoder.from(region.latitude, region.longitude)
       .then(json => {
         this.props.screenProps.updateState(
@@ -38,8 +42,11 @@ export default class Map extends React.Component {
         );
       })
       .catch(error => console.warn(error));
+  }
 
+  _onRegionChange(region) {
     this.setState({region});
+    this.fetchGeoAddress(region);
   }
 
   resetRegion() {
@@ -74,7 +81,7 @@ export default class Map extends React.Component {
             flex: 3,
           }}
           region={this.state.region}
-          onRegionChange={debounce(this.onRegionChange, 400)}>
+          onRegionChange={this.onRegionChange}>
           <Marker
             coordinate={{
               latitude: this.state.region.latitude,
