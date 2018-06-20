@@ -29,7 +29,8 @@ export default class Opening extends React.Component {
       name: this.state.name,
       phone: this.state.phone,
       bottleSize: this.state.bottleSize,
-      quantity: this.state.quantity
+      quantity: this.state.quantity,
+      location: this.state.location
     }
     return (
       <Nav screenProps={screenProps} />
@@ -254,25 +255,10 @@ class Order extends React.Component {
 
   render() {
     var props = this.props;
-    var {screenProps} = this.props;
+    var { screenProps } = this.props;
     return (
       <View style={styles.form}>
         <Text style={{ color: 'white' }}>Bottle Size? </Text>
-
-
-        {/* <View style={{ flexDirection: 'row' }}>
-          
-          <Button
-            style={{ flex: 1 }}
-            title="1 Liter"
-            onPress={() => this.setState({ bottleSize: '1 Liter' })}
-          />
-          <Button
-            style={{ flex: 1 }}
-            title="2 Liter"
-            onPress={() => this.setState({ bottleSize: '2 Liter' })}
-          />
-        </View> */}
 
         <View style={{ margin: 20 }}>
           <SegmentedControls
@@ -342,24 +328,24 @@ class Confirm extends React.Component {
   render() {
     var { screenProps } = this.props;
     return (
-      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-        <Text>
+      <View style={styles.confirm}>
+        <Text style={{ color: 'white' }}>
           Is this right?
         </Text>
-        <Text>
+        <Text style={{ color: 'white' }}>
           Name: {screenProps.name}
         </Text>
-        <Text>
+        <Text style={{ color: 'white' }}>
           Phone: {screenProps.phone}
         </Text>
-        <Text>
+        <Text style={{ color: 'white' }}>
           Bottle Size: {screenProps.bottleSize}
         </Text>
-        <Text>
+        <Text style={{ color: 'white' }}>
           Quantity: {screenProps.quantity}
         </Text>
-        <Text>
-          Street: {'dog'}
+        <Text style={{ color: 'white' }}>
+          Street: {screenProps.location}, Phnom Penh, Cambodia
         </Text>
 
         <Button
@@ -373,11 +359,15 @@ class Confirm extends React.Component {
 class Success extends React.Component {
   render() {
     return (
-      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-        <Text>
+      <View style={styles.thanks}>
+        <Text style={{ color: 'white' }}>
           Thank you for your order. We will call you at 123-123-1222 within 5
           minutes to confirm your order.
         </Text>
+        <Button
+          title='Home'
+          onPress={() => this.props.navigation.navigate('Home')}
+        />
       </View>
     );
   }
@@ -434,6 +424,18 @@ const styles = StyleSheet.create({
     bottom: 0,
     right: 0,
     left: 0,
+  },
+  confirm: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'black',
+  },
+  thanks: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'black',
   }
 });
 
