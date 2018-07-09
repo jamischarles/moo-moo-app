@@ -18,36 +18,9 @@ import Map from './components/Map';
 import {Icon} from 'react-native-elements';
 import {SegmentedControls} from 'react-native-radio-buttons';
 
-export default class Opening extends React.Component {
-  constructor() {
-    super();
-    this.state = {
-      name: '',
-      phone: '',
-      bottleSize: '',
-      quantity: '',
-      street: '',
-      coordinates: '',
-    };
-  }
-
-  render() {
-    const screenProps = {
-      updateState: (stateVal, val) => {
-        this.setState({[stateVal]: val});
-      },
-      name: this.state.name,
-      phone: this.state.phone,
-      bottleSize: this.state.bottleSize,
-      quantity: this.state.quantity,
-      location: this.state.location,
-    };
-    return <Nav screenProps={screenProps} />;
-  }
-}
-
 class HomeScreen extends React.Component {
   render() {
+    var {i18n} = this.props.screenProps;
     return (
       <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
         <ImageBackground
@@ -55,73 +28,68 @@ class HomeScreen extends React.Component {
           source={{
             uri:
               'https://www.maxpixel.net/static/photo/1x/Cow-White-Black-Cows-Pasture-Nature-2306534.jpg',
-          }}>
-          <View style={styles.carouselContainer}>
-            <Text style={{fontFamily: 'Georgia-Bold', color: 'white'}}>
-              Welcome to Moo Moo farms.
-            </Text>
-          </View>
-        </ImageBackground>
+          }}
+        />
+        <View style={styles.carouselContainer}>
+          <Text style={styles.homeGreetingText}>{i18n('homeGreeting')}</Text>
+        </View>
         <View style={styles.startMilkOrderContainer}>
           <Button
             color="white"
-            title="Start Milk order"
+            title={i18n('homeCTA')}
             onPress={() => this.props.navigation.navigate('Form')}
           />
         </View>
-        <View
-          style={{
-            flex: 2,
-            flexDirection: 'row',
-            justifyContent: 'space-evenly',
-          }}>
-          <View style={styles.infoBox}>
-            <Icon
-              size={40}
-              style={{flex: 1}}
-              color={'white'}
-              name="emoji-happy"
-              type="entypo"
-            />
-            <Text style={{color: 'white', flex: 2}}>
-              This Milk is Fantastic
+
+        <View style={styles.valuePropRows}>
+          <View style={{flexDirection: 'row'}}>
+            <Text style={styles.valuePropRowsTitle}>
+              {i18n('homePropTitle')}
             </Text>
           </View>
-          <View style={styles.infoBox}>
+          // First Bullet item
+          <View style={{flexDirection: 'row'}}>
             <Icon
-              size={40}
+              size={20}
               style={{flex: 1}}
               color={'white'}
               name="location-pin"
               type="entypo"
             />
-            <Text style={{color: 'white', flex: 2}}>
-              This Milk is Fantastic
-            </Text>
+            <Text style={styles.valuePropText}>{i18n('homeSub1')}</Text>
           </View>
-          <View style={styles.infoBox}>
+          // Second Bullet item
+          <View style={{flexDirection: 'row'}}>
             <Icon
-              size={40}
+              size={20}
               style={{flex: 1}}
               color={'white'}
-              name="thumb-up"
-              type="SimpleLineIcons"
+              name="location-pin"
+              type="entypo"
             />
-            <Text style={{color: 'white', flex: 2}}>
-              This Milk is Fantastic
-            </Text>
+            <Text style={styles.valuePropText}>{i18n('homeSub2')}</Text>
           </View>
-          <View style={styles.infoBox}>
+          // Third Bullet item
+          <View style={{flexDirection: 'row'}}>
             <Icon
-              size={40}
+              size={20}
               style={{flex: 1}}
               color={'white'}
-              name="explore"
-              type="MaterialCommunityIcons"
+              name="location-pin"
+              type="entypo"
             />
-            <Text style={{color: 'white', flex: 2}}>
-              This Milk is Fantastic
-            </Text>
+            <Text style={styles.valuePropText}>{i18n('homeSub3')}</Text>
+          </View>
+          // Fourth Bullet item
+          <View style={{flexDirection: 'row'}}>
+            <Icon
+              size={20}
+              style={{flex: 1}}
+              color={'white'}
+              name="location-pin"
+              type="entypo"
+            />
+            <Text style={styles.valuePropText}>{i18n('homeSub4')}</Text>
           </View>
         </View>
       </View>
@@ -403,20 +371,60 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   carouselContainer: {
-    backgroundColor: '#272727',
-    padding: '5%',
-    borderRadius: 25,
+    // alignItems: 'flex-start',
+    position: 'absolute',
+    top: '5%',
+    // backgroundColor: '#272727',
+    backgroundColor: 'rgba(39, 39, 39, 0.7)',
+    // padding: '5%',
+    padding: 10,
+    borderRadius: 5,
+    zIndex: 10000,
   },
+  homeGreetingText: {
+    color: 'white',
+    fontWeight: 'bold',
+    fontSize: 18,
+  },
+
   title: {
     color: 'white',
   },
+
+  // section above valuePropRows
+  // FIXME: get rid of it?
+  valuePropRowsTitle: {
+    color: 'white',
+    fontSize: 18,
+    fontWeight: 'bold',
+    paddingBottom: 10,
+  },
+
+  valuePropRows: {
+    backgroundColor: 'black',
+    display: 'flex',
+    flex: 1,
+    flexDirection: 'column',
+    padding: 15,
+    width: '100%',
+  },
+
+  valuePropText: {
+    color: 'white',
+    lineHeight: 24,
+    fontSize: 14,
+  },
+
   startMilkOrderContainer: {
     width: '100%',
     backgroundColor: '#272727',
-    flex: 1,
+    flex: 0.5,
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
+    // alignItems: 'flex-start',
+    padding: 10,
+    // marginTop: -350,
   },
   infoBox: {
     flex: 1,
@@ -452,7 +460,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const Nav = createStackNavigator(
+const RootStack = createStackNavigator(
   {
     Home: HomeScreen,
     Form: createMaterialTopTabNavigator(
@@ -487,6 +495,59 @@ const Nav = createStackNavigator(
     },
   },
 );
+
+// main wrapper with main state
+export default class App extends React.Component {
+  constructor() {
+    super();
+    this.state = {
+      language: 'en', // OR khmer?
+      // FIXME: move these? Change them?
+      name: '',
+      phone: '',
+      bottleSize: '',
+      quantity: '',
+      street: '',
+      coordinates: '',
+    };
+
+    this.i18n = this.i18n.bind(this);
+  }
+
+  i18n(key) {
+    return content[this.state.language][key];
+  }
+
+  render() {
+    // FIXME: this is fugly. Fix it...
+    // passes props to all the screens
+    const screenProps = {
+      i18n: this.i18n,
+      updateState: (stateVal, val) => {
+        this.setState({[stateVal]: val});
+      },
+      // FIXME: Can I remove all these?
+      name: this.state.name,
+      phone: this.state.phone,
+      bottleSize: this.state.bottleSize,
+      quantity: this.state.quantity,
+      location: this.state.location,
+    };
+    return <RootStack screenProps={screenProps} />;
+  }
+}
+
+var content = {
+  en: {
+    homeGreeting: 'Welcome to Moo Moo farms.',
+    homeCTA: 'Start Milk order',
+    homePropTitle: 'Why our milk is great!',
+    homeSub1: 'Fresh Cambodian Product',
+    homeSub2: 'No Chemicals or Additives',
+    homeSub3: 'American Standard and quality',
+    homeSub4: 'Healthy and Delicious',
+  },
+};
 
 // export default createMaterialTopTabNavigator(
 //   {
