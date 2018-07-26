@@ -124,7 +124,11 @@ class FormScreen extends React.Component {
     return (
       <View style={styles.form}>
         <Text
-          style={{color: 'white', fontFamily: 'Georgia-Bold', fontSize: 25}}>
+          style={{
+            color: 'white',
+            fontFamily: 'serif',
+            fontSize: 25,
+          }}>
           What is your name?{' '}
         </Text>
         <TextInput
@@ -146,7 +150,11 @@ class FormScreen extends React.Component {
         />
 
         <Text
-          style={{color: 'white', fontFamily: 'Georgia-Bold', fontSize: 25}}>
+          style={{
+            color: 'white',
+            fontFamily: 'serif',
+            fontSize: 25,
+          }}>
           Phone number?{' '}
         </Text>
         <TextInput
