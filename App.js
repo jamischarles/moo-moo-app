@@ -57,7 +57,7 @@ class HomeScreen extends React.Component {
               'https://www.maxpixel.net/static/photo/1x/Cow-White-Black-Cows-Pasture-Nature-2306534.jpg',
           }}>
           <View style={styles.carouselContainer}>
-            <Text style={{fontFamily: 'Georgia-Bold', color: 'white'}}>
+            <Text style={{fontFamily: 'serif', color: 'white'}}>
               Welcome to Moo Moo farms.
             </Text>
           </View>
@@ -156,7 +156,11 @@ class FormScreen extends React.Component {
     return (
       <View style={styles.form}>
         <Text
-          style={{color: 'white', fontFamily: 'Georgia-Bold', fontSize: 25}}>
+          style={{
+            color: 'white',
+            fontFamily: 'serif',
+            fontSize: 25,
+          }}>
           What is your name?{' '}
         </Text>
         <TextInput
@@ -178,7 +182,11 @@ class FormScreen extends React.Component {
         />
 
         <Text
-          style={{color: 'white', fontFamily: 'Georgia-Bold', fontSize: 25}}>
+          style={{
+            color: 'white',
+            fontFamily: 'serif',
+            fontSize: 25,
+          }}>
           Phone number?{' '}
         </Text>
         <TextInput
