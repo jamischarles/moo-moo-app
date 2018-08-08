@@ -8,7 +8,7 @@ import {
   Text,
   TextInput,
 } from 'react-native';
-import {Marker} from 'react-native-maps';
+import {Marker, Circle} from 'react-native-maps';
 import {MapView, Constants, Location, Permissions} from 'expo';
 import Geocoder from 'react-native-geocoding';
 import debounce from 'lodash/debounce';
@@ -95,12 +95,10 @@ export default class Map extends React.Component {
   _fetchGeoAddress(region) {
     Geocoder.from(region.latitude, region.longitude)
       .then(json => {
-        // console.log('json', json);
-        // console.log(
-        //   'json.formatted_address',
-        //   json.results[0].formatted_address,
-        // );
-        console.log('json.formatted_address', json.formatted_address);
+        console.log(
+          'json.formatted_address',
+          json.results[0].formatted_address,
+        );
 
         // console.log('LAST', json.results[0].address_components[0]);
         this.props.screenProps.updateState(
@@ -223,6 +221,15 @@ export default class Map extends React.Component {
             }}>
             <Image source={CowIcon} style={{height: 35, width: 30}} />
           </Marker>
+          <Circle
+            radius={6000}
+            center={{
+              latitude: 11.549441,
+              longitude: 104.918148,
+              // latitude: 11.568470353160166,
+              // longitude: 104.95745898407355,
+            }}
+          />
         </MapView>
         <View
           style={{
