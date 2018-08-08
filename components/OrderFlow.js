@@ -283,9 +283,7 @@ class Confirm extends React.Component {
           <Text style={boldStyle}>{screenProps.bottleSize}liter</Text> bottles
           will be delivered to{' '}
         </Text>
-        <Text style={boldStyle}>
-          {screenProps.location}, Phnom Penh, Cambodia
-        </Text>
+        <Text style={boldStyle}>{screenProps.location}</Text>
         <Text
           style={{
             marginTop: 15,
@@ -353,9 +351,7 @@ export class OrderSuccess extends React.Component {
             <Text style={boldStyle}>{screenProps.bottleSize}liter</Text> bottles
             will be delivered to{' '}
           </Text>
-          <Text style={boldStyle}>
-            {screenProps.location}, Phnom Penh, Cambodia
-          </Text>
+          <Text style={boldStyle}>{screenProps.location}</Text>
           <Text
             style={{
               marginTop: 15,

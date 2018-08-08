@@ -95,9 +95,18 @@ export default class Map extends React.Component {
   _fetchGeoAddress(region) {
     Geocoder.from(region.latitude, region.longitude)
       .then(json => {
+        // console.log('json', json);
+        // console.log(
+        //   'json.formatted_address',
+        //   json.results[0].formatted_address,
+        // );
+        console.log('json.formatted_address', json.formatted_address);
+
+        // console.log('LAST', json.results[0].address_components[0]);
         this.props.screenProps.updateState(
           'location',
-          json.results[0].address_components[0].long_name,
+          json.results[0].formatted_address,
+          // json.results[0].address_components[0].long_name,
         );
       })
       .catch(error => console.warn(error));
@@ -122,7 +131,8 @@ export default class Map extends React.Component {
       .then(json => {
         this.props.screenProps.updateState(
           'location',
-          json.results[0].address_components[0].long_name,
+          json.results[0].formatted_address,
+          // json.results[0].address_components[0].long_name,
         );
       })
       .catch(error => console.warn(error));
@@ -221,9 +231,7 @@ export default class Map extends React.Component {
             justifyContent: 'center',
             alignItems: 'center',
           }}>
-          <Text style={{color: '#666'}}>
-            `{this.props.screenProps.location}, Phnom Penh, Cambodia`
-          </Text>
+          <Text style={{color: '#666'}}>{this.props.screenProps.location}</Text>
           <Button
             color={'#666'}
             style={{flex: 1}}
