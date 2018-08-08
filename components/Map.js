@@ -16,7 +16,7 @@ import MarkerIcon from './../images/MarkerIcon.svg';
 import CowIcon from './../images/CowIcon.png';
 // import { GOOGLE_API } from 'react-native-dotenv'
 
-Geocoder.init('AIzaSyBzHpB9P08KOrik2Y4oMg9ghcsEsjlblKU');
+Geocoder.init('AIzaSyDOo_sZchy4F55UcoTjeQo4GssOb0ldpMw');
 
 export default class Map extends React.Component {
   constructor() {

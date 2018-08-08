@@ -107,10 +107,10 @@ class Order extends React.Component {
     var buttons = ['1 liter - $1', '2 liter - $2'];
 
     // start array with 10 el and fill with Picker items
-    var quantityPickerItems = Array.from('x'.repeat(10));
-    quantityPickerItems.map((item, key) => {
-      return <Picker.Item label={'1'} value={'1'} />;
-    });
+    // var quantityPickerItems = Array.from('x'.repeat(10));
+    // quantityPickerItems.map((item, key) => {
+    //   return <Picker.Item label={'1'} value={'1'} />;
+    // });
 
     return (
       <View style={styles.form}>
