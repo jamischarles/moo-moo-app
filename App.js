@@ -45,7 +45,6 @@ class HomeScreen extends React.Component {
             // backgroundColor="#2096f3"
             color="white"
             raised
-            // title={i18n('homeCTA')}
             title="English"
             onPress={() => updateState('language', 'en')}
           />
@@ -54,7 +53,6 @@ class HomeScreen extends React.Component {
             // backgroundColor="#2096f3"
             color="white"
             raised
-            // title={i18n('homeCTA')}
             title="ភាសាខ្មែរ"
             onPress={() => updateState('language', 'km')}
           />
@@ -244,10 +242,11 @@ export default class App extends React.Component {
       // FIXME: move these? Change them?
       name: '',
       phone: '',
-      bottleSize: '',
-      quantity: '',
+      bottleSize: '1',
+      quantity: '1',
       street: '',
       coordinates: '',
+      totalCost: 1,
     };
 
     this.i18n = this.i18n.bind(this);
@@ -271,6 +270,7 @@ export default class App extends React.Component {
       bottleSize: this.state.bottleSize,
       quantity: this.state.quantity,
       location: this.state.location,
+      totalCost: this.state.totalCost,
     };
     return <RootStack screenProps={screenProps} />;
   }

@@ -151,7 +151,7 @@ export default class Map extends React.Component {
             right: 0,
             top: 0,
             bottom: 0,
-            backgroundColor: 'black',
+            // backgroundColor: 'black',
           }}>
           <View
             style={{
@@ -162,13 +162,7 @@ export default class Map extends React.Component {
             }}>
             <Text style={{color: 'white'}}>LOADING...</Text>
             <Button
-              color={'white'}
-              title="Reset Location"
-              onPress={() => this.resetRegion()}
-              style={{flex: 1}}
-            />
-            <Button
-              color={'white'}
+              color={'#666'}
               style={{flex: 1}}
               title="Confirm"
               onPress={() => this.props.navigation.navigate('Confirm')}
@@ -179,6 +173,12 @@ export default class Map extends React.Component {
     }
 
     // TODO: fix the reset button... Use refs?
+    // <Button
+    //   color={'#666'}
+    //   title="Reset Location"
+    //   onPress={() => this.resetRegion()}
+    //   style={{flex: 1}}
+    // />
 
     return (
       <View
@@ -188,7 +188,7 @@ export default class Map extends React.Component {
           right: 0,
           top: 0,
           bottom: 0,
-          backgroundColor: 'black',
+          // backgroundColor: 'black',
         }}>
         <MapView
           ref={ref => (this.map = ref)}
@@ -221,17 +221,11 @@ export default class Map extends React.Component {
             justifyContent: 'center',
             alignItems: 'center',
           }}>
-          <Text style={{color: 'white'}}>
+          <Text style={{color: '#666'}}>
             `{this.props.screenProps.location}, Phnom Penh, Cambodia`
           </Text>
           <Button
-            color={'white'}
-            title="Reset Location"
-            onPress={() => this.resetRegion()}
-            style={{flex: 1}}
-          />
-          <Button
-            color={'white'}
+            color={'#666'}
             style={{flex: 1}}
             title="Confirm"
             onPress={() => this.props.navigation.navigate('Confirm')}
@@ -241,3 +235,10 @@ export default class Map extends React.Component {
     );
   }
 }
+
+// <Button
+//   color={'#666'}
+//   title="Reset Location"
+//   onPress={() => this.resetRegion()}
+//   style={{flex: 1}}
+// />
