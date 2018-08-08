@@ -31,10 +31,7 @@ class HomeScreen extends React.Component {
       <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
         <ImageBackground
           style={styles.carousel}
-          source={{
-            uri:
-              'https://www.maxpixel.net/static/photo/1x/Cow-White-Black-Cows-Pasture-Nature-2306534.jpg',
-          }}
+          source={require('./images/cow_black_white.jpg')}
         />
         <View style={styles.carouselContainer}>
           <Text style={styles.homeGreetingText}>{i18n('homeGreeting')}</Text>

@@ -182,6 +182,7 @@ class PersonalInfo extends React.Component {
     this.state = {
       name: '',
       phone: '',
+      hasErrors: false,
     };
     // this.submitFormViaEmail = this.submitFormViaEmail.bind(this);
   }
@@ -197,6 +198,20 @@ class PersonalInfo extends React.Component {
   //       this.props.navigation.navigate('Success');
   //     });
   // }
+  isFormValid() {
+    var {screenProps} = this.props;
+    if (screenProps.name == '') {
+      this.setState({hasErrors: true});
+      return false;
+    }
+    if (screenProps.phone == '') {
+      this.setState({hasErrors: true});
+      return false;
+    }
+
+    this.setState({hasErrors: false});
+    return true;
+  }
   render() {
     const {screenProps} = this.props;
     var props = this.props;
@@ -214,8 +229,15 @@ class PersonalInfo extends React.Component {
           keyboardType="numeric"
           style={styles.formInput}
           onChangeText={text => screenProps.updateState('phone', text)}
-          // value={this.state.text}
+          // value={this.state.phone}
         />
+
+        {this.state.hasErrors && (
+          <Text style={styles.formError}>
+            Please fill in Name and Phone Number so we can call you to confirm
+            the order.
+          </Text>
+        )}
 
         <Button
           large
@@ -224,7 +246,7 @@ class PersonalInfo extends React.Component {
           title="Set dropoff location"
           onPress={() => {
             Keyboard.dismiss();
-            this.props.navigation.navigate('Location');
+            this.isFormValid() && this.props.navigation.navigate('Location');
           }}
         />
       </View>
@@ -410,6 +432,9 @@ var styles = {
     right: 0,
     left: 0,
     padding: 10,
+  },
+  formError: {
+    color: 'red',
   },
   formLabel: {
     fontWeight: 'bold',
