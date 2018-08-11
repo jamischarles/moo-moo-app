@@ -1,13 +1,7 @@
 import React from 'react';
-import {
-  Platform,
-  StyleSheet,
-  Image,
-  Button,
-  View,
-  Text,
-  TextInput,
-} from 'react-native';
+import {Platform, StyleSheet, Image, View, Text, TextInput} from 'react-native';
+
+import {Button} from 'react-native-elements';
 import {Marker, Circle} from 'react-native-maps';
 import {MapView, Constants, Location, Permissions} from 'expo';
 import Geocoder from 'react-native-geocoding';
@@ -172,7 +166,7 @@ export default class Map extends React.Component {
             <Button
               color={'#666'}
               style={{flex: 1}}
-              title="Confirm"
+              title="Use this location"
               onPress={() => this.props.navigation.navigate('Confirm')}
             />
           </View>
@@ -238,11 +232,26 @@ export default class Map extends React.Component {
             justifyContent: 'center',
             alignItems: 'center',
           }}>
-          <Text style={{color: '#666'}}>{this.props.screenProps.location}</Text>
+          <Text
+            style={{
+              color: '#666',
+              fontWeight: 'bold',
+              marginBottom: 20,
+              marginTop: -20,
+            }}>
+            {this.props.screenProps.location}
+          </Text>
           <Button
-            color={'#666'}
+            containerViewStyle={{
+              height: 60,
+              backgroundColor: '#666',
+              width: '100%',
+            }}
+            large
+            backgroundColor="#666"
+            color={'#eee'}
             style={{flex: 1}}
-            title="Confirm"
+            title="Use this location"
             onPress={() => this.props.navigation.navigate('Confirm')}
           />
         </View>

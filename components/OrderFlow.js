@@ -35,6 +35,7 @@ var wrapForm = withFormik({});
 class Order extends React.Component {
   constructor() {
     super();
+
     this.state = {
       bottleSize: '',
       selectedOption: '',
@@ -48,18 +49,6 @@ class Order extends React.Component {
     this.setSelectedOption = this.setSelectedOption.bind(this);
     this.updateBottleSizeIndex = this.updateBottleSizeIndex.bind(this);
   }
-  // submitFormViaEmail() {
-  //   var url =
-  //     'https://hooks.zapier.com/hooks/catch/3120953/an5a96?name=lamis&city=san jose';
-  //   // var url = 'https://jsonplaceholder.typicode.com/posts/1'; // fake
-
-  //   fetch(url, {})
-  //     .then(response => response.json())
-  //     .then(json => {
-  //       console.log(json);
-  //       this.props.navigation.navigate('Confirm');
-  //     });
-  // }
 
   setSelectedOption(screenProps, selectedOption) {
     this.setState(
@@ -88,10 +77,14 @@ class Order extends React.Component {
   // FIXME: combine this logic in one place (update form?)
   updateBottleSizeIndex(selectedIndex) {
     var {screenProps} = this.props;
+
+    var nextImg = this.state['img' + selectedIndex];
+    console.log('nextImg', nextImg);
     this.setState(
       {
         selectedIndex: selectedIndex,
         totalCost: this.state.quantity * (selectedIndex + 1),
+        selectedImage: this['img' + selectedIndex],
       },
       () => {
         screenProps.updateState('bottleSize', selectedIndex + 1);
@@ -106,6 +99,22 @@ class Order extends React.Component {
     var {selectedIndex} = this.state;
     var buttons = ['1 liter - $1', '2 liter - $2'];
 
+    var image1 = (
+      <ImageBackground
+        style={styles.bottleImage}
+        source={require('../images/moo_bottle_1l.png')}
+      />
+    );
+
+    var image2 = (
+      <ImageBackground
+        style={styles.bottleImage}
+        source={require('../images/moo_bottle_2l.png')}
+      />
+    );
+
+    var bottleImage = selectedIndex === 0 ? image1 : image2;
+
     // start array with 10 el and fill with Picker items
     // var quantityPickerItems = Array.from('x'.repeat(10));
     // quantityPickerItems.map((item, key) => {
@@ -113,7 +122,8 @@ class Order extends React.Component {
     // });
 
     return (
-      <View style={styles.form}>
+      <View style={{...styles.form, padding: 10, top: 0}}>
+        {bottleImage}
         <Text style={styles.formLabel}>Bottle Size </Text>
 
         <ButtonGroup
@@ -261,16 +271,37 @@ class Confirm extends React.Component {
   }
 
   submitFormViaEmail() {
-    var url =
-      'https://hooks.zapier.com/hooks/catch/3120953/an5a96?name=lamis&city=san jose';
-    // var url = 'https://jsonplaceholder.typicode.com/posts/1'; // fake
+    var {screenProps} = this.props;
 
-    fetch(url, {})
+    var {name, phone, bottleSize, quantity, location, totalCost} = screenProps;
+
+    // TODO: add phone number for them to call?
+    // Any questions? Call #arstarsta
+    var data = {
+      name,
+      phone,
+      quantity,
+      bottleSize, // can we have mixed orders? later...
+      location,
+      totalCost,
+    };
+    var url = 'https://hooks.zapier.com/hooks/catch/3120953/gqmer9/';
+
+    fetch(url, {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    })
       .then(response => response.json())
       .then(json => {
         console.log(json);
         this.props.navigation.navigate('Success');
       });
+
+    // this.props.navigation.navigate('failure');
   }
 
   render() {
@@ -291,7 +322,7 @@ class Confirm extends React.Component {
     // };
     return (
       <View style={styles.form}>
-        <Text style={Object.assign({}, styles.formLabel, {fontSize: 22})}>
+        <Text style={{fontSize: 22, fontWeight: 'bold', marginBottom: 10}}>
           Confirmation
         </Text>
         <Text style={{fontSize: 18}}>
@@ -321,11 +352,13 @@ class Confirm extends React.Component {
             backgroundColor={styles.ctaBGColor}
             containerViewStyle={styles.formNextButton}
             title="Place Order"
-            onPress={() => this.props.navigation.navigate('Success')}
+            onPress={() => this.submitFormViaEmail()}
           />
         )}
       </View>
     );
+    // onPress={() => this.props.navigation.navigate('Success')}
+
     // return (
     //   <View style={styles.form}>
     //     <Text style={styles.formLabel}>Confirmation</Text>
@@ -349,6 +382,8 @@ class Confirm extends React.Component {
   }
 }
 export class OrderSuccess extends React.Component {
+  // before mount, make the ajax call...
+  //
   // FIXME: remove some of this duplication with confirmation page?
   render() {
     var {screenProps, isSuccessPage} = this.props;
@@ -358,15 +393,22 @@ export class OrderSuccess extends React.Component {
     };
     return (
       <View style={styles.form}>
-        <Text h4>Order completed</Text>
-        <Text>
+        <Text style={{fontSize: 24, fontWeight: 'bold'}}>Order completed</Text>
+        <Text style={{fontSize: 18, marginTop: 10}}>
           Thank you for your order. We will call you at {screenProps.phone}{' '}
           within 10 minutes to confirm your order.
         </Text>
 
-        <View>
-          <Text style={{fontSize: 22, marginTop: 45, fontWeight: 'bold'}}>
-            Order details:
+        <View
+          style={{
+            backgroundColor: 'white',
+            borderColor: '#666',
+            borderWidth: 1,
+            marginTop: 45,
+            padding: 10,
+          }}>
+          <Text style={{fontSize: 24, fontWeight: '400', marginBottom: 15}}>
+            Order details
           </Text>
           <Text style={{fontSize: 18}}>
             <Text style={boldStyle}>{screenProps.quantity}</Text>{' '}
@@ -432,6 +474,17 @@ var styles = {
     right: 0,
     left: 0,
     padding: 10,
+  },
+  bottleImage: {
+    flex: 4,
+    width: '100%',
+    backgroundColor: 'black',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 10,
+    paddingLeft: -10,
+    paddingRight: -10,
   },
   formError: {
     color: 'red',
