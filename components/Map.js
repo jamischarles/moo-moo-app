@@ -143,6 +143,7 @@ export default class Map extends React.Component {
   // RN maps: don't make region controlled. Makes it very very glitchy.
   // Just get it initally and then let the map handle it...
   render() {
+    var {i18n} = this.props.screenProps;
     // is this even needed?
     if (!this.state.region) {
       return (
@@ -251,7 +252,7 @@ export default class Map extends React.Component {
             backgroundColor="#666"
             color={'#eee'}
             style={{flex: 1}}
-            title="Use this location"
+            title={i18n('mapCTA')}
             onPress={() => this.props.navigation.navigate('Confirm')}
           />
         </View>

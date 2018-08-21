@@ -249,8 +249,27 @@ export default class App extends React.Component {
     this.i18n = this.i18n.bind(this);
   }
 
-  i18n(key) {
-    return content[this.state.language][key];
+  i18n(key, data) {
+    var contentStr = content[this.state.language][key];
+
+    if (!data) return contentStr;
+
+    // if data, then return array instead of string
+    var contentArr = contentStr.split(/(\${\w+})/);
+
+    var contentReady = contentArr.map((item, i) => {
+      // if placeholder, return interpolated value, else return raw string
+      var match = item.match(/\${(\w+)}/);
+      if (!match) return item;
+      // FIXME: consider adding error handling for missing keys
+      var value = data[match[1]];
+
+      return React.createElement(Text, {key: item + i}, value);
+      // return value;
+    });
+
+    // return React.createElement(Text, {key: '1231'}, contentReady);
+    return contentReady;
   }
 
   render() {
@@ -290,23 +309,67 @@ const RootStack = createStackNavigator(
 
 var content = {
   en: {
+    ctaNext: 'Next',
     homeGreeting: 'Welcome to Moo Moo farms.',
+    homeSubtitle: 'Delivering fresh, local milk in Phnom Penh, Cambodia',
     homeCTA: 'Start Milk order',
     homePropTitle: 'Why our milk is great!',
     homeSub1: 'Fresh Cambodian Product',
     homeSub2: 'No Chemicals or Additives',
     homeSub3: 'American Standard and quality',
     homeSub4: 'Healthy and Delicious',
+    orderBottleSize: 'Bottle Size',
+    orderQuantity: 'Quantity',
+    orderTotalCost: 'Total Cost',
+    personalName: 'Name',
+    personalPhone: 'Phone',
+    personalCTA: 'Set dropoff location',
+    personalError:
+      'Please fill in Name and Phone Number so we can call you to confirm the order.',
+    mapCTA: 'Set dropoff location',
+    confirmTitle: 'Confirmation',
+    confirmP1:
+      'After you place your order, we will call ${name} at ${phone} to confirm the following order:',
+    confirmP2: 'bottles will be delivered to',
+    confirmTotal: 'Total cost: ',
+    confirmCTA: 'Place Order',
+    successTitle: 'Order completed',
+    successP1:
+      'Thank you for your order. We will call you at ${phone} within 10 minutes to confirm your order.',
+    successOrderTitle: 'Order details',
+    successCTA: 'Home',
   },
 
   km: {
-    homeGreeting: ' សូមស្វាគមន៍មកកាន់ចំការម៉ៅ',
-    homeCTA: 'ចាប់ផ្តើមលំដាប់ទឹកដោះ',
-    homePropTitle: 'ហេតុអ្វីទឹកដោះរបស់យើងល្អណាស់!',
-    homeSub1: 'ផលិតផលកម្ពុជាថ្',
-    homeSub2: 'គ្មានសារធាតុគីមីឬបន្ថែម',
+    ctaNext: 'បន្ទាប់',
+    homeGreeting: 'សូមស្វាគមន៍មកកាន់កសិដ្ឋានមូមូ',
+    homeSubtitle: 'ផ្តល់ជូននូវទឹកដោះគោស្រស់នៅក្នុងរាជធានីភ្នំពេញប្រទេសកម្ពុជា',
+    homeCTA: 'ចាប់ផ្តើមកូមុងទឹកដោះគោ',
+    homePropTitle: 'ហេតុអ្វីបានជាទឹកដោះរបស់យើងអស្ចារ្យ?',
+    homeSub1: 'ផលិតផលកម្ពុជាថ្មី',
+    homeSub2: 'មិនមានសារធាតុគីមីឬបន្ថែម',
     homeSub3: 'ស្តង់ដារអាមេរិកនិងគុណភាព',
     homeSub4: 'មានសុខភាពល្អនិងឆ្ងាញ់',
+    orderBottleSize: 'ទំហំដប',
+    orderQuantity: 'បរិមាណ',
+    orderTotalCost: 'ចំណាយសរុប',
+    personalName: 'ឈ្មោះ',
+    personalPhone: 'លេខទូរសព្ទ',
+    personalCTA: 'កំណត់ទីតាំងដឹកជញ្ជូន',
+    personalError:
+      'សូមបំពេញឈ្មោះនិងលេខទូរស័ព្ទដូច្នេះយើងអាចទូរស័ព្ទមកអ្នកដើម្បីបញ្ជាក់ពីការបញ្ជាទិញរបស់អ្នក',
+    mapCTA: 'កំណត់ទីតាំងដឹកជញ្ជូន',
+    confirmTitle: 'ការបញ្ជាក់',
+    confirmP1:
+      'បន្ទាប់ពីអ្នកដាក់ការបញ្ជាទិញរបស់អ្នកយើងនឹងទូរស័ព្ទទៅកាន់ ${name} តាមលេខ ${phone} ដើម្បីបញ្ជាក់ពីលំដាប់ដូចខាងក្រោម:',
+    confirmP2: 'ដប នឹងត្រូវបានបញ្ជូន',
+    confirmTotal: 'ចំណាយសរុប :',
+    confirmCTA: 'ដាក់កាកូមុង',
+    successTitle: 'ការបញ្ជាទិញបានបញ្ចប់',
+    successP1:
+      'សូមអរគុណចំពោះការកូមុងរបស់អ្នក ។យើងនឹងទូរស័ព្ទទៅអ្នកនៅ ${phone} ក្នុងរយៈពេល 10 នាទីដើម្បីបញ្ជាក់ពីការបញ្ជាទិញរបស់អ្នក។',
+    successOrderTitle: 'ព័ត៌មានលម្អិតការកូមុង',
+    successCTA: 'អេក្រង់ដើម',
   },
 };
 

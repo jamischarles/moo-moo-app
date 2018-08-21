@@ -78,8 +78,6 @@ class Order extends React.Component {
   updateBottleSizeIndex(selectedIndex) {
     var {screenProps} = this.props;
 
-    var nextImg = this.state['img' + selectedIndex];
-    console.log('nextImg', nextImg);
     this.setState(
       {
         selectedIndex: selectedIndex,
@@ -96,6 +94,7 @@ class Order extends React.Component {
   render() {
     var props = this.props;
     var {screenProps} = this.props;
+    var {i18n} = this.props.screenProps;
     var {selectedIndex} = this.state;
     var buttons = ['1 liter - $1', '2 liter - $2'];
 
@@ -124,7 +123,7 @@ class Order extends React.Component {
     return (
       <View style={{...styles.form, padding: 10, top: 0}}>
         {bottleImage}
-        <Text style={styles.formLabel}>Bottle Size </Text>
+        <Text style={styles.formLabel}>{i18n('orderBottleSize')}</Text>
 
         <ButtonGroup
           buttonStyle={{backgroundColor: '#eee'}}
@@ -135,7 +134,7 @@ class Order extends React.Component {
           containerStyle={{height: 100, marginBottom: 20}}
         />
 
-        <Text style={styles.formLabel}>Quantity</Text>
+        <Text style={styles.formLabel}>{i18n('orderQuantity')}</Text>
 
         <Picker
           selectedValue={this.state.quantity}
@@ -171,14 +170,14 @@ class Order extends React.Component {
           <Picker.Item label={'10'} value={'10'} />
         </Picker>
 
-        <Text style={styles.formLabel}>Total Cost</Text>
+        <Text style={styles.formLabel}>{i18n('orderTotalCost')}</Text>
         <Text style={{fontSize: 16}}>${this.state.totalCost}</Text>
 
         <Button
           large
           containerViewStyle={styles.formNextButton}
           backgroundColor={styles.ctaBGColor}
-          title="Next"
+          title={i18n('ctaNext')}
           onPress={() => this.props.navigation.navigate('Name')}
         />
       </View>
@@ -194,20 +193,8 @@ class PersonalInfo extends React.Component {
       phone: '',
       hasErrors: false,
     };
-    // this.submitFormViaEmail = this.submitFormViaEmail.bind(this);
   }
-  // submitFormViaEmail() {
-  //   var url =
-  //     'https://hooks.zapier.com/hooks/catch/3120953/an5a96?name=lamis&city=san jose';
-  //   // var url = 'https://jsonplaceholder.typicode.com/posts/1'; // fake
 
-  //   fetch(url, {})
-  //     .then(response => response.json())
-  //     .then(json => {
-  //       console.log(json);
-  //       this.props.navigation.navigate('Success');
-  //     });
-  // }
   isFormValid() {
     var {screenProps} = this.props;
     if (screenProps.name == '') {
@@ -223,18 +210,19 @@ class PersonalInfo extends React.Component {
     return true;
   }
   render() {
-    const {screenProps} = this.props;
+    var {screenProps} = this.props;
+    var {i18n} = screenProps;
     var props = this.props;
     return (
       <View style={styles.form}>
-        <Text style={styles.formLabel}>Name</Text>
+        <Text style={styles.formLabel}>{i18n('personalName')}</Text>
         <TextInput
           style={styles.formInput}
           onChangeText={text => screenProps.updateState('name', text)}
           // value={this.state.text}
         />
 
-        <Text style={styles.formLabel}>Phone Number</Text>
+        <Text style={styles.formLabel}>{i18n('personalPhone')}</Text>
         <TextInput
           keyboardType="numeric"
           style={styles.formInput}
@@ -243,17 +231,14 @@ class PersonalInfo extends React.Component {
         />
 
         {this.state.hasErrors && (
-          <Text style={styles.formError}>
-            Please fill in Name and Phone Number so we can call you to confirm
-            the order.
-          </Text>
+          <Text style={styles.formError}>{i18n('personalError')}</Text>
         )}
 
         <Button
           large
           backgroundColor={styles.ctaBGColor}
           containerViewStyle={styles.formNextButton}
-          title="Set dropoff location"
+          title={i18n('personalCTA')}
           onPress={() => {
             Keyboard.dismiss();
             this.isFormValid() && this.props.navigation.navigate('Location');
@@ -306,6 +291,7 @@ class Confirm extends React.Component {
 
   render() {
     var {screenProps, isSuccessPage} = this.props;
+    var {i18n} = screenProps;
     var boldStyle = {
       fontWeight: 'bold',
       fontSize: 18,
@@ -323,18 +309,17 @@ class Confirm extends React.Component {
     return (
       <View style={styles.form}>
         <Text style={{fontSize: 22, fontWeight: 'bold', marginBottom: 10}}>
-          Confirmation
+          {i18n('confirmTitle')}
         </Text>
         <Text style={{fontSize: 18}}>
-          After you place your order, we will call{' '}
-          <Text style={boldStyle}>{screenProps.name}</Text> at{' '}
-          <Text style={boldStyle}>{screenProps.phone}</Text> to confirm the
-          following order:
+          {i18n('confirmP1', {
+            name: <Text style={boldStyle}>{screenProps.name}</Text>,
+            phone: <Text style={boldStyle}>{screenProps.phone}</Text>,
+          })}
         </Text>
         <Text style={{marginTop: 15, fontSize: 18}}>
           <Text style={boldStyle}>{screenProps.quantity}</Text>{' '}
-          <Text style={boldStyle}>{screenProps.bottleSize}liter</Text> bottles
-          will be delivered to{' '}
+          {i18n('confirmP2')}{' '}
         </Text>
         <Text style={boldStyle}>{screenProps.location}</Text>
         <Text
@@ -343,7 +328,7 @@ class Confirm extends React.Component {
             fontWeight: 'bold',
             fontSize: 22,
           }}>
-          Total Cost: ${screenProps.totalCost}
+          {i18n('confirmTotal')} ${screenProps.totalCost}
         </Text>
 
         {!isSuccessPage && (
@@ -351,7 +336,7 @@ class Confirm extends React.Component {
             large
             backgroundColor={styles.ctaBGColor}
             containerViewStyle={styles.formNextButton}
-            title="Place Order"
+            title={i18n('confirmCTA')}
             onPress={() => this.submitFormViaEmail()}
           />
         )}
@@ -387,16 +372,24 @@ export class OrderSuccess extends React.Component {
   // FIXME: remove some of this duplication with confirmation page?
   render() {
     var {screenProps, isSuccessPage} = this.props;
+    var {i18n} = screenProps;
     var boldStyle = {
       fontWeight: 'bold',
       fontSize: 18,
     };
     return (
       <View style={styles.form}>
-        <Text style={{fontSize: 24, fontWeight: 'bold'}}>Order completed</Text>
+        <Text style={{fontSize: 24, fontWeight: 'bold'}}>
+          {i18n('successTitle')}
+        </Text>
         <Text style={{fontSize: 18, marginTop: 10}}>
-          Thank you for your order. We will call you at {screenProps.phone}{' '}
-          within 10 minutes to confirm your order.
+          {i18n('successP1', {
+            phone: (
+              <Text style={{fontSize: 18, fontWeight: 'bold'}}>
+                {screenProps.phone}
+              </Text>
+            ),
+          })}
         </Text>
 
         <View
@@ -408,12 +401,11 @@ export class OrderSuccess extends React.Component {
             padding: 10,
           }}>
           <Text style={{fontSize: 24, fontWeight: '400', marginBottom: 15}}>
-            Order details
+            {i18n('successOrderTitle')}
           </Text>
-          <Text style={{fontSize: 18}}>
+          <Text style={{marginTop: 15, fontSize: 18}}>
             <Text style={boldStyle}>{screenProps.quantity}</Text>{' '}
-            <Text style={boldStyle}>{screenProps.bottleSize}liter</Text> bottles
-            will be delivered to{' '}
+            {i18n('confirmP2')}{' '}
           </Text>
           <Text style={boldStyle}>{screenProps.location}</Text>
           <Text
@@ -422,14 +414,14 @@ export class OrderSuccess extends React.Component {
               fontWeight: 'bold',
               fontSize: 22,
             }}>
-            Total Cost: ${screenProps.totalCost}
+            {i18n('confirmTotal')} ${screenProps.totalCost}
           </Text>
         </View>
         <Button
           large
           containerViewStyle={styles.formNextButton}
           backgroundColor={styles.ctaBGColor}
-          title="Home"
+          title={i18n('successCTA')}
           onPress={() => this.props.navigation.navigate('Home')}
         />
       </View>
