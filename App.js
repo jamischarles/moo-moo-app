@@ -35,6 +35,7 @@ class HomeScreen extends React.Component {
         />
         <View style={styles.carouselContainer}>
           <Text style={styles.homeGreetingText}>{i18n('homeGreeting')}</Text>
+          <Text style={styles.homeSubtitle}>{i18n('homeSubtitle')}</Text>
         </View>
         <View style={styles.languageBtnContainer}>
           <Button
@@ -167,6 +168,12 @@ const styles = StyleSheet.create({
     color: 'white',
     fontWeight: 'bold',
     fontSize: 18,
+  },
+  homeSubtitle: {
+    color: 'white',
+    // fontWeight: 'bold',
+    marginTop: 5,
+    fontSize: 12,
   },
 
   title: {
@@ -318,7 +325,7 @@ var content = {
     homeSub2: 'No Chemicals or Additives',
     homeSub3: 'American Standard and quality',
     homeSub4: 'Healthy and Delicious',
-    orderBottleSize: 'Bottle Size',
+    orderBottleSize: 'Bottle Size is 2 liters',
     orderQuantity: 'Quantity',
     orderTotalCost: 'Total Cost',
     personalName: 'Name',
@@ -350,7 +357,7 @@ var content = {
     homeSub2: 'មិនមានសារធាតុគីមីឬបន្ថែម',
     homeSub3: 'ស្តង់ដារអាមេរិកនិងគុណភាព',
     homeSub4: 'មានសុខភាពល្អនិងឆ្ងាញ់',
-    orderBottleSize: 'ទំហំដប',
+    orderBottleSize: 'ទំហំដបគឺ 2 លីត្រ',
     orderQuantity: 'បរិមាណ',
     orderTotalCost: 'ចំណាយសរុប',
     personalName: 'ឈ្មោះ',

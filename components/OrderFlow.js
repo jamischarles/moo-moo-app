@@ -36,30 +36,35 @@ class Order extends React.Component {
   constructor() {
     super();
 
+    this.bottleCost = 4.3;
+
     this.state = {
-      bottleSize: '',
-      selectedOption: '',
-      sizes: ['1 Liter', '2 Liter'],
-      quantity: 1,
-      selectedIndex: 0,
-      totalCost: 1,
+      // bottleSize: '',
+      // selectedOption: '',
+      // sizes: ['1 Liter', '2 Liter'],
+      // selectedIndex: 0,
+      quantity: 2,
+      totalCost: 0,
     };
+
+    this.state.totalCost = (this.bottleCost * this.state.quantity).toFixed(2);
+
     // this.submitFormViaEmail = this.submitFormViaEmail.bind(this);
     this.renderOption = this.renderOption.bind(this);
-    this.setSelectedOption = this.setSelectedOption.bind(this);
-    this.updateBottleSizeIndex = this.updateBottleSizeIndex.bind(this);
+    // this.setSelectedOption = this.setSelectedOption.bind(this);
+    // this.updateBottleSizeIndex = this.updateBottleSizeIndex.bind(this);
   }
 
-  setSelectedOption(screenProps, selectedOption) {
-    this.setState(
-      {
-        selectedOption,
-      },
-      () => {
-        screenProps.updateState('bottleSize', selectedOption);
-      },
-    );
-  }
+  // setSelectedOption(screenProps, selectedOption) {
+  //   this.setState(
+  //     {
+  //       selectedOption,
+  //     },
+  //     () => {
+  //       screenProps.updateState('bottleSize', selectedOption);
+  //     },
+  //   );
+  // }
 
   renderOption(option, selected, onSelect, index) {
     const style = selected ? {fontWeight: 'bold'} : {};
@@ -75,21 +80,21 @@ class Order extends React.Component {
   }
 
   // FIXME: combine this logic in one place (update form?)
-  updateBottleSizeIndex(selectedIndex) {
-    var {screenProps} = this.props;
-
-    this.setState(
-      {
-        selectedIndex: selectedIndex,
-        totalCost: this.state.quantity * (selectedIndex + 1),
-        selectedImage: this['img' + selectedIndex],
-      },
-      () => {
-        screenProps.updateState('bottleSize', selectedIndex + 1);
-        screenProps.updateState('totalCost', this.state.totalCost);
-      },
-    );
-  }
+  // updateBottleSizeIndex(selectedIndex) {
+  //   var {screenProps} = this.props;
+  //
+  //   this.setState(
+  //     {
+  //       selectedIndex: selectedIndex,
+  //       totalCost: this.state.quantity * (selectedIndex + 1),
+  //       selectedImage: this['img' + selectedIndex],
+  //     },
+  //     () => {
+  //       screenProps.updateState('bottleSize', selectedIndex + 1);
+  //       screenProps.updateState('totalCost', this.state.totalCost);
+  //     },
+  //   );
+  // }
 
   render() {
     var props = this.props;
@@ -98,41 +103,13 @@ class Order extends React.Component {
     var {selectedIndex} = this.state;
     var buttons = ['1 liter - $1', '2 liter - $2'];
 
-    var image1 = (
-      <ImageBackground
-        style={styles.bottleImage}
-        source={require('../images/moo_bottle_1l.png')}
-      />
-    );
-
-    var image2 = (
-      <ImageBackground
-        style={styles.bottleImage}
-        source={require('../images/moo_bottle_2l.png')}
-      />
-    );
-
-    var bottleImage = selectedIndex === 0 ? image1 : image2;
-
-    // start array with 10 el and fill with Picker items
-    // var quantityPickerItems = Array.from('x'.repeat(10));
-    // quantityPickerItems.map((item, key) => {
-    //   return <Picker.Item label={'1'} value={'1'} />;
-    // });
-
     return (
       <View style={{...styles.form, padding: 10, top: 0}}>
-        {bottleImage}
-        <Text style={styles.formLabel}>{i18n('orderBottleSize')}</Text>
-
-        <ButtonGroup
-          buttonStyle={{backgroundColor: '#eee'}}
-          selectedButtonStyle={{backgroundColor: 'white'}}
-          onPress={this.updateBottleSizeIndex}
-          selectedIndex={selectedIndex}
-          buttons={buttons}
-          containerStyle={{height: 100, marginBottom: 20}}
+        <ImageBackground
+          style={styles.bottleImage}
+          source={require('../images/moo_bottle_2l.png')}
         />
+        <Text style={styles.formLabel}>{i18n('orderBottleSize')}</Text>
 
         <Text style={styles.formLabel}>{i18n('orderQuantity')}</Text>
 
@@ -150,7 +127,7 @@ class Order extends React.Component {
             this.setState(
               {
                 quantity: itemValue,
-                totalCost: itemValue * (this.state.selectedIndex + 1),
+                totalCost: (itemValue * this.bottleCost).toFixed(2),
               },
               () => {
                 screenProps.updateState('quantity', itemValue);
@@ -158,7 +135,6 @@ class Order extends React.Component {
               },
             )
           }>
-          <Picker.Item label={'1'} value={'1'} />
           <Picker.Item label={'2'} value={'2'} />
           <Picker.Item label={'3'} value={'3'} />
           <Picker.Item label={'4'} value={'4'} />
