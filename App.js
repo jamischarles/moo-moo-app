@@ -184,9 +184,9 @@ const styles = StyleSheet.create({
   // FIXME: get rid of it?
   valuePropRowsTitle: {
     color: 'white',
-    fontSize: 18,
+    fontSize: 16,
     fontWeight: 'bold',
-    paddingBottom: 10,
+    paddingBottom: 8,
   },
 
   valuePropRows: {
@@ -194,7 +194,10 @@ const styles = StyleSheet.create({
     display: 'flex',
     flex: 1,
     flexDirection: 'column',
-    padding: 15,
+    paddingTop: 10,
+    paddingLeft: 15,
+    paddingRight: 15,
+    paddingBottom: 30,
     width: '100%',
   },
 

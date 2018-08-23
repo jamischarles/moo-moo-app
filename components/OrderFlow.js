@@ -12,6 +12,7 @@ import {
   // Text,
   TextInput,
   ImageBackground,
+  ActivityIndicator,
   Picker,
 } from 'react-native';
 
@@ -247,6 +248,9 @@ class Confirm extends React.Component {
   };
   constructor() {
     super();
+    this.state = {
+      isLoading: false,
+    };
     this.submitFormViaEmail = this.submitFormViaEmail.bind(this);
   }
 
@@ -267,6 +271,7 @@ class Confirm extends React.Component {
     };
     var url = 'https://hooks.zapier.com/hooks/catch/3120953/gqmer9/';
 
+    this.setState({isLoading: true});
     fetch(url, {
       method: 'POST',
       headers: {
@@ -278,6 +283,8 @@ class Confirm extends React.Component {
       .then(response => response.json())
       .then(json => {
         console.log(json);
+
+        this.setState({isLoading: false});
         this.props.navigation.navigate('Success');
       });
 
@@ -291,6 +298,14 @@ class Confirm extends React.Component {
       fontWeight: 'bold',
       fontSize: 18,
     };
+
+    if (this.state.isLoading) {
+      return (
+        <View style={[spinnerStyles.container, spinnerStyles.horizontal]}>
+          <ActivityIndicator size="large" color="#2096f3" />
+        </View>
+      );
+    }
     // var dividerStyleA = {
     //   backgroundColor: '#999',
     //   marginTop: 20,
@@ -446,6 +461,18 @@ export default (Form = createMaterialTopTabNavigator(
     },
   },
 ));
+
+const spinnerStyles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+  },
+  horizontal: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    padding: 10,
+  },
+});
 
 // TODO: use createStylesheet?
 var styles = {
