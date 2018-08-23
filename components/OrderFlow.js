@@ -32,7 +32,15 @@ import Map from './Map';
 
 var wrapForm = withFormik({});
 
+// FIXME: put this somewhere else?
+
 class Order extends React.Component {
+  static navigationOptions = ({navigation, screenProps}) => {
+    return {
+      title: screenProps.i18n('navOne'),
+    };
+  };
+
   constructor() {
     super();
 
@@ -51,6 +59,7 @@ class Order extends React.Component {
 
     // this.submitFormViaEmail = this.submitFormViaEmail.bind(this);
     this.renderOption = this.renderOption.bind(this);
+
     // this.setSelectedOption = this.setSelectedOption.bind(this);
     // this.updateBottleSizeIndex = this.updateBottleSizeIndex.bind(this);
   }
@@ -162,6 +171,11 @@ class Order extends React.Component {
 }
 
 class PersonalInfo extends React.Component {
+  static navigationOptions = ({navigation, screenProps}) => {
+    return {
+      title: screenProps.i18n('navTwo'),
+    };
+  };
   constructor() {
     super();
     this.state = {
@@ -226,6 +240,11 @@ class PersonalInfo extends React.Component {
 }
 
 class Confirm extends React.Component {
+  static navigationOptions = ({navigation, screenProps}) => {
+    return {
+      title: screenProps.i18n('navFour'),
+    };
+  };
   constructor() {
     super();
     this.submitFormViaEmail = this.submitFormViaEmail.bind(this);

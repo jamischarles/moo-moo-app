@@ -345,6 +345,10 @@ var content = {
       'Thank you for your order. We will call you at ${phone} within 10 minutes to confirm your order.',
     successOrderTitle: 'Order details',
     successCTA: 'Home',
+    navOne: 'Order',
+    navTwo: 'Name',
+    navThree: 'Location',
+    navFour: 'Confirm',
   },
 
   km: {
@@ -377,6 +381,10 @@ var content = {
       'សូមអរគុណចំពោះការកូមុងរបស់អ្នក ។យើងនឹងទូរស័ព្ទទៅអ្នកនៅ ${phone} ក្នុងរយៈពេល 10 នាទីដើម្បីបញ្ជាក់ពីការបញ្ជាទិញរបស់អ្នក។',
     successOrderTitle: 'ព័ត៌មានលម្អិតការកូមុង',
     successCTA: 'អេក្រង់ដើម',
+    navOne: 'កូមុង',
+    navTwo: 'ឈ្មោះ',
+    navThree: 'ទីតាំង',
+    navFour: 'បញ្ជាក់',
   },
 };
 

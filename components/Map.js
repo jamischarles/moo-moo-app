@@ -13,6 +13,11 @@ import CowIcon from './../images/CowIcon.png';
 Geocoder.init('AIzaSyDOo_sZchy4F55UcoTjeQo4GssOb0ldpMw');
 
 export default class Map extends React.Component {
+  static navigationOptions = ({navigation, screenProps}) => {
+    return {
+      title: screenProps.i18n('navThree'),
+    };
+  };
   constructor() {
     super();
     this.state = {
