@@ -36,6 +36,7 @@ class HomeScreen extends React.Component {
         <View style={styles.carouselContainer}>
           <Text style={styles.homeGreetingText}>{i18n('homeGreeting')}</Text>
           <Text style={styles.homeSubtitle}>{i18n('homeSubtitle')}</Text>
+          <Text style={styles.homeSubtitle}>{i18n('homeCall')}</Text>
         </View>
         <View style={styles.languageBtnContainer}>
           <Button
@@ -149,6 +150,21 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     zIndex: 10000,
   },
+  // phoneNumberContainer: {
+  //   flex: 1,
+  //   flexDirection: 'row',
+  //   alignItems: 'center',
+  //   justifyContent: 'center',
+  //   // alignItems: 'flex-start',
+  //   position: 'absolute',
+  //   top: '30%',
+  //   // backgroundColor: '#272727',
+  //   backgroundColor: 'rgba(39, 39, 39, 0.7)',
+  //   // padding: '5%',
+  //   padding: 10,
+  //   borderRadius: 5,
+  //   zIndex: 10000,
+  // },
   languageBtnContainer: {
     flex: 1,
     flexDirection: 'row',
@@ -156,7 +172,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     // alignItems: 'flex-start',
     position: 'absolute',
-    top: '15%',
+    top: '23%',
     // backgroundColor: '#272727',
     backgroundColor: 'rgba(39, 39, 39, 0.7)',
     // padding: '5%',
@@ -254,6 +270,7 @@ export default class App extends React.Component {
       street: '',
       coordinates: '',
       totalCost: 1,
+      orderHasFailed: false,
     };
 
     this.i18n = this.i18n.bind(this);
@@ -287,16 +304,18 @@ export default class App extends React.Component {
     // passes props to all the screens
     const screenProps = {
       i18n: this.i18n,
-      updateState: (stateVal, val) => {
-        this.setState({[stateVal]: val});
+      updateState: (stateVal, val, cb = function() {}) => {
+        this.setState({[stateVal]: val}, cb);
       },
       // FIXME: Can I remove all these?
+      // FIXME: fetch all these from this.state? Just spread / obj.assign?
       name: this.state.name,
       phone: this.state.phone,
       bottleSize: this.state.bottleSize,
       quantity: this.state.quantity,
       location: this.state.location,
       totalCost: this.state.totalCost,
+      hasOrderFailed: this.state.hasOrderFailed,
     };
     return <RootStack screenProps={screenProps} />;
   }
@@ -321,7 +340,8 @@ var content = {
   en: {
     ctaNext: 'Next',
     homeGreeting: 'Welcome to Moo Moo farms.',
-    homeSubtitle: 'Delivering fresh, local milk in Phnom Penh, Cambodia',
+    homeSubtitle: 'Delivering fresh, local milk in Phnom Penh, Cambodia.',
+    homeCall: 'Any questions? Call 098978410.',
     homeCTA: 'Start Milk order',
     homePropTitle: 'Why our milk is great!',
     homeSub1: 'Fresh Cambodian Product',
@@ -332,7 +352,7 @@ var content = {
     orderQuantity: 'Quantity',
     orderTotalCost: 'Total Cost',
     personalName: 'Name',
-    personalPhone: 'Phone',
+    personalPhone: 'Phone Number',
     personalCTA: 'Set dropoff location',
     personalError:
       'Please fill in Name and Phone Number so we can call you to confirm the order.',
@@ -344,8 +364,11 @@ var content = {
     confirmTotal: 'Total cost: ',
     confirmCTA: 'Place Order',
     successTitle: 'Order completed',
+    failureTitle: 'There has been a problem.',
     successP1:
       'Thank you for your order. We will call you at ${phone} within 10 minutes to confirm your order.',
+    failureP1:
+      'There has been a problem. Please call us at ${phone} to complete your order.',
     successOrderTitle: 'Order details',
     successCTA: 'Home',
     navOne: 'Order',
@@ -357,34 +380,39 @@ var content = {
   km: {
     ctaNext: 'បន្ទាប់',
     homeGreeting: 'សូមស្វាគមន៍មកកាន់កសិដ្ឋានមូមូ',
-    homeSubtitle: 'ផ្តល់ជូននូវទឹកដោះគោស្រស់នៅក្នុងរាជធានីភ្នំពេញប្រទេសកម្ពុជា',
-    homeCTA: 'ចាប់ផ្តើមកូមុងទឹកដោះគោ',
+    homeSubtitle:
+      'ផ្តល់ជូនទឹកដោះគោស្រស់ នៅក្នុងរាជធានីភ្នំពេញ នៃប្រទេសកម្ពុជា ',
+    homeCall: 'តើអ្នកមានសំណួរទេ? សូមទូរស័ព្ទមកលេខនេះ 098978410',
+    homeCTA: 'ចាប់ផ្តើមបញ្ជាទិញ ទឹកដោះគោ',
     homePropTitle: 'ហេតុអ្វីបានជាទឹកដោះរបស់យើងអស្ចារ្យ?',
-    homeSub1: 'ផលិតផលកម្ពុជាថ្មី',
-    homeSub2: 'មិនមានសារធាតុគីមីឬបន្ថែម',
-    homeSub3: 'ស្តង់ដារអាមេរិកនិងគុណភាព',
-    homeSub4: 'មានសុខភាពល្អនិងឆ្ងាញ់',
+    homeSub1: 'ផលិតផលថ្មី របស់កម្ពុជា',
+    homeSub2: 'មិនមានសារធាតុគីមី ឬសារធាតុបន្ថែមផ្សេងៗ',
+    homeSub3: 'ស្តង់ដារអាមេរិក និងមានគុណភាព',
+    homeSub4: 'មានសុខភាពល្អ និងរសជាតិឈ្ងុយឆ្ងាញ់',
     orderBottleSize: 'ទំហំដបគឺ 2 លីត្រ',
     orderQuantity: 'បរិមាណ',
     orderTotalCost: 'ចំណាយសរុប',
     personalName: 'ឈ្មោះ',
-    personalPhone: 'លេខទូរសព្ទ',
+    personalPhone: 'លេខទូរស័ព្ទ',
     personalCTA: 'កំណត់ទីតាំងដឹកជញ្ជូន',
     personalError:
-      'សូមបំពេញឈ្មោះនិងលេខទូរស័ព្ទដូច្នេះយើងអាចទូរស័ព្ទមកអ្នកដើម្បីបញ្ជាក់ពីការបញ្ជាទិញរបស់អ្នក',
+      'សូមបំពេញឈ្មោះ និងលេខទូរស័ព្ទរបស់លោកអ្នក ដូច្នេះក្រុមការងារយើងខ្ញុំអាចទំនាក់ទំនង ដើម្បីបញ្ជាក់ពីការបញ្ជាទិញ របស់លោកអ្នក',
     mapCTA: 'កំណត់ទីតាំងដឹកជញ្ជូន',
     confirmTitle: 'ការបញ្ជាក់',
     confirmP1:
-      'បន្ទាប់ពីអ្នកដាក់ការបញ្ជាទិញរបស់អ្នកយើងនឹងទូរស័ព្ទទៅកាន់ ${name} តាមលេខ ${phone} ដើម្បីបញ្ជាក់ពីលំដាប់ដូចខាងក្រោម:',
+      'បន្ទាប់ពីលោកអ្នកដាក់ការបញ្ជាទិញ យើងខ្ញុំនឹងទំនាក់ទំនងទៅកាន់លោក${name} តាមរយៈ ទូរស័ព្ទ ${phone} ដើម្បីបញ្ជាក់ពីលំដាប់ដូចខាងក្រោម:',
     confirmP2: 'ដប នឹងត្រូវបានបញ្ជូន',
     confirmTotal: 'ចំណាយសរុប :',
-    confirmCTA: 'ដាក់កាកូមុង',
+    confirmCTA: 'ដាក់ការបញ្ជាទិញ',
     successTitle: 'ការបញ្ជាទិញបានបញ្ចប់',
+    failureTitle: 'មានបញ្ហា',
     successP1:
-      'សូមអរគុណចំពោះការកូមុងរបស់អ្នក ។យើងនឹងទូរស័ព្ទទៅអ្នកនៅ ${phone} ក្នុងរយៈពេល 10 នាទីដើម្បីបញ្ជាក់ពីការបញ្ជាទិញរបស់អ្នក។',
-    successOrderTitle: 'ព័ត៌មានលម្អិតការកូមុង',
+      'សូមអរគុណចំពោះការបញ្ជាទិញរបស់លោកអ្នក ។ យើងខ្ញុំនឹងទំនាក់ទំនង ទៅកាន់លោកអ្នក ${phone} ក្នុងរយៈពេល 10 នាទី ដើម្បីបញ្ជាក់ពីការបញ្ជាទិញរបស់លោកអ្នក។',
+    failureP1:
+      'មានបញ្ហា។ សូមទូរស័ព្ទមកលេខនេះដើម្បីបំពេញការបញ្ជាទិញរបស់អ្នក ${phone}',
+    successOrderTitle: 'ព័ត៌មានលម្អិតសម្រាប់ការបញ្ជាទិញ',
     successCTA: 'អេក្រង់ដើម',
-    navOne: 'កូមុង',
+    navOne: 'បញ្ជាទិញ',
     navTwo: 'ឈ្មោះ',
     navThree: 'ទីតាំង',
     navFour: 'បញ្ជាក់',

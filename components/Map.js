@@ -94,10 +94,10 @@ export default class Map extends React.Component {
   _fetchGeoAddress(region) {
     Geocoder.from(region.latitude, region.longitude)
       .then(json => {
-        console.log(
-          'json.formatted_address',
-          json.results[0].formatted_address,
-        );
+        // console.log(
+        //   'json.formatted_address',
+        //   json.results[0].formatted_address,
+        // );
 
         // console.log('LAST', json.results[0].address_components[0]);
         this.props.screenProps.updateState(

@@ -282,13 +282,14 @@ class Confirm extends React.Component {
     })
       .then(response => response.json())
       .then(json => {
-        console.log(json);
-
         this.setState({isLoading: false});
         this.props.navigation.navigate('Success');
+      })
+      .catch(e => {
+        screenProps.updateState('hasOrderFailed', true, () => {
+          this.props.navigation.navigate('Success');
+        });
       });
-
-    // this.props.navigation.navigate('failure');
   }
 
   render() {
@@ -382,13 +383,15 @@ export class OrderSuccess extends React.Component {
   // FIXME: remove some of this duplication with confirmation page?
   render() {
     var {screenProps, isSuccessPage} = this.props;
+    var {hasOrderFailed} = screenProps;
     var {i18n} = screenProps;
     var boldStyle = {
       fontWeight: 'bold',
       fontSize: 18,
     };
-    return (
-      <View style={styles.form}>
+
+    var successMsg = (
+      <View>
         <Text style={{fontSize: 24, fontWeight: 'bold'}}>
           {i18n('successTitle')}
         </Text>
@@ -401,6 +404,29 @@ export class OrderSuccess extends React.Component {
             ),
           })}
         </Text>
+      </View>
+    );
+
+    var failureMsg = (
+      <View>
+        <Text style={{fontSize: 24, fontWeight: 'bold'}}>
+          {i18n('failureTitle')}
+        </Text>
+        <Text style={{fontSize: 18, marginTop: 10}}>
+          {i18n('failureP1', {
+            phone: (
+              <Text style={{fontSize: 18, fontWeight: 'bold'}}>
+                {'098978410'}
+              </Text>
+            ),
+          })}
+        </Text>
+      </View>
+    );
+
+    return (
+      <View style={styles.form}>
+        {hasOrderFailed ? failureMsg : successMsg}
 
         <View
           style={{
