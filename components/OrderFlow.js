@@ -480,6 +480,8 @@ export default (Form = createMaterialTopTabNavigator(
       },
       tabStyle: {
         backgroundColor: '#272727',
+        paddingRight: 0,
+        paddingLeft: 0,
       },
       labelStyle: {
         color: 'white',

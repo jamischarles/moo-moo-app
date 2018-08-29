@@ -63,6 +63,8 @@ class HomeScreen extends React.Component {
             backgroundColor="#2096f3"
             color="white"
             raised
+            titleStyle={{lineHeight: 24}}
+            buttonStyle={{padding: 0, height: 60}}
             title={i18n('homeCTA')}
             onPress={() => this.props.navigation.navigate('Order')}
           />
@@ -232,6 +234,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     // alignItems: 'flex-start',
     padding: 10,
+    // paddingLeft: 10,
+    // paddingRight: 10,
     // marginTop: -350,
   },
   infoBox: {
