@@ -425,7 +425,7 @@ export class OrderSuccess extends React.Component {
     );
 
     return (
-      <View style={styles.form}>
+      <View style={[styles.form, {top: 0}]}>
         {hasOrderFailed ? failureMsg : successMsg}
 
         <View

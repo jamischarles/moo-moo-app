@@ -1,5 +1,6 @@
 import React from 'react';
 import {
+  SafeAreaView,
   StyleSheet,
   View,
   Text,
@@ -321,7 +322,11 @@ export default class App extends React.Component {
       totalCost: this.state.totalCost,
       hasOrderFailed: this.state.hasOrderFailed,
     };
-    return <RootStack screenProps={screenProps} />;
+    return (
+      <SafeAreaView style={{flex: 1, backgroundColor: '#fff'}}>
+        <RootStack screenProps={screenProps} />;
+      </SafeAreaView>
+    );
   }
 }
 
