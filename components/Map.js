@@ -60,7 +60,11 @@ export default class Map extends React.Component {
   }
 
   _getLocationAsync = async () => {
-    let {status} = await Permissions.askAsync(Permissions.LOCATION);
+    try {
+      var {status} = await Permissions.askAsync(Permissions.LOCATION);
+    } catch (e) {
+      console.log('PERMISSION for maps DENIED!!!', e);
+    }
     if (status !== 'granted') {
       this.setState({
         errorMessage: 'Permission to access location was denied',
