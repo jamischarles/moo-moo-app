@@ -1,16 +1,18 @@
 {
   "expo": {
     "name": "Moo Moo Farms",
-    "icon": "./path/to/your/app-icon.png",
+    "icon": "./images/icon.png",
     "version": "1.0.0",
-    "slug": "your-app-slug",
+    "slug": "moo-moo-farms-order",
     "sdkVersion": "27.0.0",
     "orientation": "portrait",
     "ios": {
-      "bundleIdentifier": "com.moo_moo_farms.order_milk"
+      "bundleIdentifier": "com.moomoofarms.order-milk",
+      "infoPlist": {}
     },
-    "infoPlist": {
-      "NSLocationWhenInUseUsageDescription": "Some permission description text."
+    "locales": {
+      "en": "./languages/english.json",
+      "km": "./languages/khmer.json"
     }
   }
 }
