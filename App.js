@@ -1,5 +1,6 @@
 import React from 'react';
 import {
+  StatusBar,
   SafeAreaView,
   StyleSheet,
   View,
@@ -30,6 +31,7 @@ class HomeScreen extends React.Component {
     var {i18n, updateState} = this.props.screenProps;
     return (
       <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+        <StatusBar />
         <ImageBackground
           style={styles.carousel}
           source={require('./images/cow_black_white.jpg')}

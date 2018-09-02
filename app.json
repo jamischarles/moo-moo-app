@@ -7,8 +7,7 @@
     "sdkVersion": "27.0.0",
     "orientation": "portrait",
     "ios": {
-      "bundleIdentifier": "com.moomoofarms.order-milk",
-      "infoPlist": {}
+      "bundleIdentifier": "com.moomoofarms.order-milk"
     },
     "locales": {
       "en": "./languages/english.json",
