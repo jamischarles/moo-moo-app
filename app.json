@@ -2,7 +2,7 @@
   "expo": {
     "name": "Moo Moo Farms",
     "icon": "./images/icon.png",
-    "version": "1.0.0",
+    "version": "1.0.2",
     "slug": "moo-moo-farms-order",
     "sdkVersion": "27.0.0",
     "orientation": "portrait",
