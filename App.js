@@ -273,10 +273,10 @@ export default class App extends React.Component {
       name: '',
       phone: '',
       bottleSize: '1',
-      quantity: '1',
+      quantity: 0,
       street: '',
       coordinates: '',
-      totalCost: 1,
+      totalCost: 0,
       orderHasFailed: false,
     };
 

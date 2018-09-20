@@ -42,8 +42,8 @@ class Order extends React.Component {
     };
   };
 
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
 
     this.bottleCost = 4.3;
 
@@ -57,6 +57,11 @@ class Order extends React.Component {
     };
 
     this.state.totalCost = (this.bottleCost * this.state.quantity).toFixed(2);
+
+    // update the screenprops quantity and cost too in case user doesn't change the amount.
+    // needed since screenProps state will be used for the review and confirm pages.
+    props.screenProps.updateState('quantity', this.state.quantity);
+    props.screenProps.updateState('totalCost', this.state.totalCost);
 
     // this.submitFormViaEmail = this.submitFormViaEmail.bind(this);
     this.renderOption = this.renderOption.bind(this);
